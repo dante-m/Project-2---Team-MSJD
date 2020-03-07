@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Baseball Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+crossorigin="anonymous">
+
+<!--CSS Link-->
+  <!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
+
+<!-- Slider links -->
+  <script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+  integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+  crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+  integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+  crossorigin=""></script>
+
+  <script type="text/javascript" src="/static/js/leaflet-timeline-slider.min.js"></script>
+  
+  <!-- Our CSS -->
+  <!-- <link rel="stylesheet" type="text/css" href="leaflet-style.css"> -->
+
+  <link rel="stylesheet" href="{{url_for('static', filename='css/leaflet-style.css')}}">
+  
+  <link rel="icon" href="{{url_for('static', filename='images/baseball.png')}}">
+</head>
+
+<body>
+  <!-- Navigation Section -->
+  <div class="navigation">
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <a class="navbar-brand" style="background-color: #0BADA6;" href="index.html">Home</a>
+      <button class="navbar-toggler border border-white" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div>
+       <!-- class="collapse navbar-collapse" id="navbarNavDropdown"> -->
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="leaflet.html">Map</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="chart.html">Chart</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="data.html">Data</a>
+          </li>
+        </ul>
+       </div>
+       <div class="logo" style = " position:sticky; left:100%; width:35px; height: 35px;">
+        <img src="{{url_for('static', filename='images/baseball-svgrepo-com.svg')}}"/>
+        </div>
+      </nav>
+  </div>
+
+  <!-- The div where we will inject our map -->
+  <div id="map"></div>
+  <!-- D3 reference point -->
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <!-- API key -->
+  <script type="text/javascript" src="/static/js/config.js"></script>
+  <!-- Our JS -->
+  <script type="text/javascript" src="/static/js/leaflet-logic.js"></script>
+
+  
+</body>
+</html>
