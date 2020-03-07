@@ -10,24 +10,16 @@
 	<div id="myDiv" style="width: auto; height: 400px;">
 
 	</div>
+
+	<select id="team-select"></select>
+
 	<script>
-		function makeplot() {
-			Plotly.d3.csv("teams.csv", function (err, data) { processData(data) });
+		function makeplot(teamIndex) {
+			Plotly.d3.csv("teams.csv", function (err, data) { processData(data, teamIndex) });
 		};
 
-		function processData(allRows) {
-
-			console.log('all rowsssss', allRows);
-			//var x = [], y = [], y2 = [], teams = [], standard_deviation = [];
-
-			/*
-			const allTeams = {
-				't1': [{date: '2000', attend: '', wins: ''}, {date: '2001', attend: '', wins: ''}],
-				't2': [{date: '2000', attend: '', wins: ''}, {date: '2001', attend: '', wins: ''}]
-			};	
-			*/
+		function processData(allRows, teamIndex) {
 			const allTeams = {};
-
 			for (var i = 0; i < allRows.length; i++) {
 				row = allRows[i];
 				if (allTeams[row['team']]) {
@@ -35,82 +27,35 @@
 						date: row['date'],
 						wins: row['wins'],
 						attend: row['attend']
-					})
+					});
 				} else {
 					allTeams[row['team']] = [{
 						date: row['date'],
 						wins: row['wins'],
 						attend: row['attend']
-					}]
+					}];
 				}
-
-
-
-				/*
-								x.push(row['date']);
-								y.push(row['wins']);
-								y2.push(row['attend']);
-								if (!teams.includes(row['team'])) teams.push(row['team']);*/
 			}
+
 			const teams = Object.keys(allTeams);
-			const visibles = new Array(teams.length).fill(false);
-			console.log('uuuu====>>>>', visibles)
-			const buttons = teams.map((team, index) => {
-				const newVisibles = visibles.map((v, i) => i === index);
-				return {
-					method: 'restyle',
-					args: ['visible', newVisibles],
-					label: team
-				}
-			});
-			console.log('buuuuuu====>>>>', buttons)
-			const traces = Object.entries(allTeams).map(([k, v], index) => {
-				
-				return [{
-					x: v.map(i => i.date),
-					y: v.map(i => i.wins)
-				}, {
-					x: v.map(i => i.date),
-					y: v.map(i => i.attend),
-					yaxis: 'y2'
-				}]
-				
-				/*
-				return {
-					x: v.map(i => i.date),
-					y: v.map(i => i.wins),
-					y: v.map(i => i.attend),
-					yaxis: 'y2',
-					visible: index === 0,
-				}*/
-			});
-
-			console.log('tracessss====>>>>', traces)
-			makePlotly(traces, teams, buttons);
-		}
-
-		function makePlotly(traces, teams, buttons) {
-			/*
-			//var plotDiv = document.getElementById("plot");
-			var traces = [{
-				x: x,
-				y: y
+			const currentTeam = Object.values(allTeams)[teamIndex];
+			const traces = [{
+				x: currentTeam.map(i => i.date),
+				y: currentTeam.map(i => i.wins),
 			}, {
-				x: x,
-				y: y2,
+				x: currentTeam.map(i => i.date),
+				y: currentTeam.map(i => i.attend),
 				yaxis: 'y2'
 			}];
-*/
+			makePlotly(traces);
+			populateDropdown(teams);
+		}
 
 
-			Plotly.newPlot('myDiv', traces[0],
+		function makePlotly(traces) {
+			Plotly.newPlot('myDiv', traces,
 				{
 					title: 'Comparing MLB Wins To Attendance',
-					updatemenus: [{
-						y: 1,
-						yanchor: 'top',
-						buttons
-					}],
 					yaxis: { title: 'wins' },
 					yaxis2: {
 						title: 'attendance',
@@ -119,7 +64,23 @@
 					}
 				});
 		};
-		makeplot();
+
+
+		function populateDropdown(teams) {
+			const selector = document.querySelector('#team-select');
+			for (var i = 0; i < teams.length; i++) {
+				var currentOption = document.createElement('option');
+				currentOption.text = teams[i];
+				currentOption.value = i;
+				selector.appendChild(currentOption);
+			}
+
+			selector.addEventListener('change', e => {
+				makeplot(e.target.value);
+			});
+		}
+
+		makeplot(0);
 	</script>
 </body>
 
